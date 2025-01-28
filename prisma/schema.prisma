@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int        @id @default(autoincrement())
+  fullName            String
+  nickname            String
+  email               String     @unique
+  password            String
+  position            String
+  department          String
+  profilePhoto        String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  sentFeedbacks       Feedback[] @relation("SentFeedbacks")
+  receivedFeedbacks   Feedback[] @relation("ReceivedFeedbacks")
+  posts               Post[]
+}
+
+model Feedback {
+  id              Int       @id @default(autoincrement())
+  type            String
+  message         String
+  response        String?
+  date            DateTime  @default(now())
+  fromUserId      Int
+  toUserId        Int
+  fromUser        User      @relation("SentFeedbacks", fields: [fromUserId], references: [id])
+  toUser          User      @relation("ReceivedFeedbacks", fields: [toUserId], references: [id])
+}
+
+model Post {
+  id              Int        @id @default(autoincrement())
+  userId          Int
+  user            User       @relation(fields: [userId], references: [id])
+  content         String
+  type            String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  reactions       Reaction[] @relation("PostReactions")
+  comments        Comment[]  @relation("PostComments")
+}
+
+model Reaction {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  postId          Int
+  type            String
+  createdAt       DateTime @default(now())
+  post            Post     @relation("PostReactions", fields: [postId], references: [id])
+}
+
+model Comment {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  postId          Int
+  message         String
+  createdAt       DateTime @default(now())
+  post            Post  @relation("PostComments", fields: [postId], references: [id]) 
+}
+
