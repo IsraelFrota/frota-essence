@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
 			email,
 			password,
 			position,
-			department
+			department,
+			roleId
 		} = await request.json();
 
 		const userExist = await prisma.user.findUnique({
@@ -28,6 +29,15 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
+		const parsedRoleId = parseInt(roleId, 10);
+
+		if (parsedRoleId < 1 && parsedRoleId > 3) {
+			return NextResponse.json(
+				{ message: "Invalid type user" },
+				{ status: 400 }
+			);
+		}
+
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		const user = await prisma.user.create({
@@ -38,6 +48,7 @@ export async function POST(request: NextRequest) {
 				password: hashedPassword,
 				position,
 				department,
+				roleId: parsedRoleId
 			}
 		});
 
