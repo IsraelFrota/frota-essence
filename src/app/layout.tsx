@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./iconGlobals.css";
 
 export const metadata: Metadata = {
   title: "Israel Frota - Essense",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`antialiased`}
+        className={`antialiased bg-[#202020]`}
       >
         {children}
       </body>
