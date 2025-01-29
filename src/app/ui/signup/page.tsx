@@ -17,6 +17,7 @@ const formSchema = z.object({
 	password: z.string().min(6, { message: "Senha deve ter pelo menos 6 caracteres." }),
 	position: z.string().min(1, { message: "Cargo/Função é obrigatório." }),
 	department: z.string().min(1, { message: "Departamento é obrigatório." }),
+	roleId: z.string().min(1, { message: "Selecione um tipo de usuário." })
 });
 
 type formDataRegisterType = z.infer<typeof formSchema>;
@@ -29,6 +30,7 @@ const Signup: React.FC<SignupProps> = ({ handleSwapForm }) => {
 		password: "",
 		position: "",
 		department: "",
+		roleId: "",
 	});
 	const [formDataRegisterErrors, setFormDataRegisterErrors] = useState<{ [key: string]: { message: string } }>({});
 	const [formSubmitError, setFormSubmitError] = useState<string>("");
@@ -72,6 +74,7 @@ const Signup: React.FC<SignupProps> = ({ handleSwapForm }) => {
 					password: "",
 					position: "",
 					department: "",
+					roleId: "",
 				});
 				setFormDataRegisterErrors({});
 				setFormSubmitError("");
@@ -141,6 +144,21 @@ const Signup: React.FC<SignupProps> = ({ handleSwapForm }) => {
 							handleSetValueInput={updateField("password")}
 						/>
 						{formDataRegisterErrors.password && <div className="font-semibold text-red-600">{formDataRegisterErrors.password.message}</div>}
+					</InputContainer>
+					<InputContainer>
+						<label>
+							Tipo de usuário
+						</label>
+						<select 
+							onChange={(e) => updateField("roleId")(e.target.value)}
+							name="typeUser"
+							className="mt-2 w-[30%] border rounded-md p-2 bg-transparent focus:outline-none selection:bg-transparent"
+						>
+							<option value="1">Administrador</option>
+							<option value="2">Gerente</option>
+							<option value="3">Comum</option>
+						</select>
+						{formDataRegisterErrors.roleId && <div className="font-semibold text-red-600">{formDataRegisterErrors.roleId.message}</div>}
 					</InputContainer>
 					<InputContainer>
 						<Input 
