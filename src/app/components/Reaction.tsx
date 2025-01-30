@@ -69,7 +69,7 @@ const Reaction: React.FC<ReactionProps> = ({ postId, numberReaction }) => {
         <span className="flex justify-center bg-gray-300 w-[20px] rounded-[30%]">{numberReactions}</span>
 
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 mt-2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+          className="absolute left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2"
         >
           <div className="flex flex-col w-[100px] truncate">
             {reactions && reactions.map((reaction, index) => (
@@ -90,7 +90,7 @@ const Reaction: React.FC<ReactionProps> = ({ postId, numberReaction }) => {
 
         {/* Menu de reações */}
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 mt-2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+          className="absolute left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2"
         >
           <div className="flex">
             <button
