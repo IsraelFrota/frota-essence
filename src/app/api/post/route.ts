@@ -41,3 +41,44 @@ export async function POST(request: NextRequest) {
     await prisma.$disconnect();
   }
 }
+
+export async function GET() {
+  try {
+    const feedbacks = await prisma.post.findMany({
+      include: {
+        user: {
+          select: {
+            nickname: true
+          }
+        },
+        reactions: {
+          include: {
+            user: {
+              select: {
+                nickname: true,
+              }
+            }
+          } 
+        },
+        comments: {
+          include: {
+            user: {
+              select: {
+                nickname: true,
+              }
+            }
+          } 
+        }
+      }
+    });
+
+    return NextResponse.json(feedbacks);
+  }
+  catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  }
+  finally {
+    await prisma.$disconnect();
+  }
+}
