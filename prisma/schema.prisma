@@ -25,7 +25,7 @@ model User {
   position            String
   department          String
   status              String?
-  profilePhoto        Bytes?
+  profilePhoto        String?
   roleId              Int       
   role                Role         @relation("UserRole", fields: [roleId], references: [id])
   createdAt           DateTime     @default(now())
@@ -83,7 +83,7 @@ model Post {
   userId              Int
   user                User         @relation("UserPost", fields: [userId], references: [id])
   content             String
-  file                Bytes?
+  file                String?
   type                String
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
