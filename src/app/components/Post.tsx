@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({ data }) => {
 				{data.file ? 
 					<Image
 						className="rounded-lg"
-						src={"/post_exemple.jpg"}
+						src={`${data.file}`}
 						alt=""
 						width={450}
 						height={450}
