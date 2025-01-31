@@ -1,14 +1,20 @@
 import { verifyToken } from "@/app/lib/middleware";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 const prisma = new PrismaClient();
 
-export async function POST(request: NextRequest) {
+export async function POST(req: any) {
   try {
-    const { content, type } = await request.json();
+    const formData = await req.formData();
 
-    const userID = verifyToken(request);
+    const content = formData.get("content");
+    const type = formData.get("type");
+    const file = formData.get("file");
+
+    const userID = verifyToken(req);
 
     if (!userID) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -23,21 +29,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
+    let fileUrl: string | null = null;
+    if (file) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const filename = file.name.replaceAll(" ", "_").toLowerCase();
+      // Gerar a URL relativa para o arquivo
+      fileUrl = `/uploads/${filename}`;
+      await writeFile(path.join(process.cwd(), `public/uploads/${filename}`), buffer);
+    }
+
+    // Criação do post no banco de dados, armazenando a URL da imagem
     const post = await prisma.post.create({
       data: {
         userId: userIDParsed,
         content,
-        type
+        type,
+        file: fileUrl, // Armazenar a URL do arquivo, não o arquivo em si
       }
     });
 
     return NextResponse.json({ message: "Post created", post }, { status: 201 });
-  } 
-	catch (error) {
+
+  } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-  } 
-	finally {
+  } finally {
     await prisma.$disconnect();
   }
 }
@@ -69,6 +85,9 @@ export async function GET() {
             }
           } 
         }
+      },
+      orderBy: {
+        updatedAt: "desc"
       }
     });
 
