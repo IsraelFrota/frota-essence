@@ -1,6 +1,6 @@
 import { verifyToken } from "@/app/lib/middleware";
 import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 
