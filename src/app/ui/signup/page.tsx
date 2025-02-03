@@ -6,10 +6,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { z } from "zod";
 
-interface SignupProps {
-	handleSwapForm: () => void;
-}
-
 const formSchema = z.object({
 	fullName: z.string().min(1, { message: "Nome é obrigatório." }).toLowerCase(),
 	nickname: z.string().min(1, { message: "Nome de usuário é obrigatório." }),
@@ -22,7 +18,7 @@ const formSchema = z.object({
 
 type formDataRegisterType = z.infer<typeof formSchema>;
 
-const Signup: React.FC<SignupProps> = ({ handleSwapForm }) => {
+const Signup: React.FC = () => {
 	const [formDataRegister, setFormDataRegister] = useState<formDataRegisterType>({
 		fullName: "",
 		nickname: "",
@@ -78,7 +74,6 @@ const Signup: React.FC<SignupProps> = ({ handleSwapForm }) => {
 				});
 				setFormDataRegisterErrors({});
 				setFormSubmitError("");
-				handleSwapForm();
 			}
 			else {
 				setFormSubmitError(data.error);
