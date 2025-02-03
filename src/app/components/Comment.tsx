@@ -16,18 +16,21 @@ interface CommentsProps {
 }
 
 interface CommentProps {
-  commentsData: CommentsProps[];
+  postId: number;
+  numberComment: number;
 }
 
-const Comment: React.FC<CommentProps> = ({ commentsData }) => {
+const Comment: React.FC<CommentProps> = ({ postId, numberComment }) => {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<CommentsProps[]>([]);
   const [numberComments, setNumberComments] = useState<number>(0);
+  const [isNewComment, setIsNewComment] = useState<boolean>(false);
 
   useEffect(() => {
-    setNumberComments(commentsData.length);
-  });
+    setNumberComments(numberComment);
+    getComments();
+  }, []);
 
   // Função para alternar a visibilidade do caixa de comentários
   const toggleCommentBox = () => {
@@ -39,12 +42,47 @@ const Comment: React.FC<CommentProps> = ({ commentsData }) => {
     setCommentText(e.target.value);
   };
 
+  const getComments = async () => {
+    try {
+      const response = await fetch(`/api/comment?postId=${postId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+        }
+      });
+
+      if (response.ok) {
+        const commentData = await response.json();
+        
+        setComments(commentData.comments);
+      }
+
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+
   // Função para adicionar o comentário à lista de comentários
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (commentText.trim() !== "") {
-      setComments([commentText, ...comments]); // Adiciona o comentário no topo
-      setCommentText(""); // Limpa o campo de texto
-      setNumberComments(numberComments + 1);
+
+      const response = await fetch("/api/comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({ message: commentText, postId }),
+      }); 
+
+      if (response.ok) {
+        setCommentText(""); // Limpa o campo de texto
+        getComments();
+        setNumberComments(numberComments + 1);
+        setIsNewComment(!isNewComment);
+      }
     }
   };
 
@@ -52,6 +90,10 @@ const Comment: React.FC<CommentProps> = ({ commentsData }) => {
   const handleCloseCommentBox = () => {
     setShowCommentBox(false);
   };
+
+  useEffect(() => {
+    getComments();
+  }, [isNewComment]);
 
   return (
     <div className="flex justify-center items-center relative">
@@ -88,7 +130,7 @@ const Comment: React.FC<CommentProps> = ({ commentsData }) => {
 
         {/* Exibição dos comentários existentes */}
         <div className="space-y-2 mb-4">
-          {commentsData.map((comment, index) => (
+          {comments.map((comment, index) => (
             <div key={index} className="bg-white p-2 rounded-md shadow-sm">
               <div className="flex items-center gap-2 mb-2">
                 <div className="bg-orange-400 w-[30px] h-[30px] rounded-full"></div>
