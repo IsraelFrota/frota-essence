@@ -10,3 +10,12 @@ export type DataReactionProps = {
   createdAt: Date;
   user: User;
 }
+
+export type DataCommentProps = {
+  id: number;
+  userId: number;
+  postId: number;
+  message: string;
+  createdAt: Date;
+  user: User;
+}
