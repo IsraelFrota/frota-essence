@@ -1,6 +1,7 @@
 import { verifyToken } from "@/app/lib/middleware";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { DataCommentProps } from "@/app/types/types";
 
 const prisma = new PrismaClient();
 
@@ -38,6 +39,44 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   } 
 	finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const url = new URL(request.url);
+    const postId  = url.searchParams.get("postId");
+
+    if (!postId) {
+      return NextResponse.json({ message: 'Missing postId parameter' }, { status: 400 });
+    }
+
+    const parsedPostId = parseInt(postId);
+
+    const comments: DataCommentProps[] = await prisma.comment.findMany({
+      where: {
+        postId: parsedPostId
+      },
+      include: {
+        user: {
+          select: {
+            nickname: true
+          }
+        }
+      }
+    });
+
+    return NextResponse.json({ comments }, { status: 200 });
+  }
+  catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+  finally {
     await prisma.$disconnect();
   }
 }
