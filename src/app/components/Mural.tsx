@@ -73,6 +73,7 @@ const Mural: React.FC = () => {
         setNewPostText("");
         setImage(null);
         getPost();
+				location.reload();
       } 
       else {
         throw new Error("Erro ao publicar o post");
