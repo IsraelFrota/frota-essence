@@ -96,7 +96,7 @@ const Post: React.FC<PostProps> = ({ data }) => {
 					</div>
 					
 					<div className="flex justify-center w-[150px]">
-						<Comment commentsData={data.comments} />
+						<Comment postId={data.id} numberComment={data.comments.length} />
 					</div>
 				</div>
 
