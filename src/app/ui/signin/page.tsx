@@ -14,11 +14,8 @@ const formSchema = z.object({
 
 type formLoginDataType = z.infer<typeof formSchema>;
 
-interface SigninProps {
-	handleSwapForm: () => void;
-}
 
-const Signin: React.FC<SigninProps> = ({ handleSwapForm }) => {
+const Signin: React.FC = () => {
 	const [formLoginData, setFormLoginData] = useState<formLoginDataType>({
 		email: "",
 		password: "",
@@ -75,6 +72,10 @@ const Signin: React.FC<SigninProps> = ({ handleSwapForm }) => {
 			console.error(error);
 		}
 	};
+
+	const handleSwapForm = () => {
+		router.push("/ui/signup");
+	}
 
 	const updateField = (field: keyof formLoginDataType) => (value: string) => {
 		setFormLoginData((prevData) => ({ ...prevData, [field]: value }));
