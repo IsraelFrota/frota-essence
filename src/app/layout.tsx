@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`antialiased bg-[#202020]`}
+        className={`antialiased bg-[#D9E6F7]`}
       >
         {children}
       </body>
