@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Post from "./Post";
 
 import { useEffect, useState } from "react";
@@ -32,10 +33,6 @@ const Mural: React.FC = () => {
 	useEffect(() => {
 		getPost();
 	}, []);
-
-  const handlePostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPostText(e.target.value);
-  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -92,12 +89,13 @@ const Mural: React.FC = () => {
 			</div>
 
 			<div>
-				<input 
-					type="text" 
+				<textarea 
+					value={newPostText} 
+					onChange={(e) => setNewPostText(e.target.value)}
 					placeholder="Faça uma publicação para contribuir com alguem hoje." 
-					onChange={handlePostChange}
-          className="border-b p-2 w-full focus:outline-none focus:border-b-[#fba91f]" 
+          className="flex border-b p-2 w-full h-auto focus:outline-none focus:border-b-[#fba91f]" 
 				/>
+
 				<div className="flex justify-between items-center">
 
 					<div className="relative pt-4">
@@ -111,20 +109,27 @@ const Mural: React.FC = () => {
 						/>
 						<span 
 							onClick={() => document.getElementById("fileInput")?.click()}
-							className="cursor-pointer material-symbols-outlined ">
-							attach_file
+							className="hover:cursor-pointer"
+						>
+							<Image 
+								src={"/assets/paper_clip.ico"}
+								alt="icone para anexar imagens"
+								width={20}
+								height={20}
+								priority
+							/>
 						</span>
 					</div>
 					
 					<div className="flex justify-between w-48 mt-4">
 						<button 
-              className="bg-slate-500 text-white px-4 h-10 rounded-md"
+              className="hover:text-[#fba91f] px-4"
               onClick={handlePublishPost}
             >
 							Publicar
 						</button>
 						<button 
-              className="bg-slate-500 text-white px-4 h-10 rounded-md"
+              className="hover:text-[#fba91f] px-4"
               onClick={() => setNewPostText("")}
             >
 							Cancelar
