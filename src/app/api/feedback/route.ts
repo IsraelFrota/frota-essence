@@ -42,3 +42,57 @@ export async function POST(request: NextRequest) {
     await prisma.$disconnect();
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const userID = verifyToken(request);
+  
+    if (!userID) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const userIDParsed = parseInt(userID);
+    if (isNaN(userIDParsed)) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
+    }
+
+    const statisticSent = await prisma.feedback.groupBy({
+      by: ["type"],
+      _count: {
+        type: true
+      },
+      orderBy: {
+        _count: {
+          type: "desc"
+        }
+      },
+      where: {
+        fromUserId: userIDParsed
+      }
+    });
+
+    const statisticReceived = await prisma.feedback.groupBy({
+      by: ["type"],
+      _count: {
+        type: true
+      },
+      orderBy: {
+        _count: {
+          type: "desc"
+        }
+      },
+      where: {
+        toUserId: userIDParsed
+      }
+    });
+
+    return NextResponse.json({ statisticSent, statisticReceived }, { status: 200 });
+  }
+  catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  } 
+	finally {
+    await prisma.$disconnect();
+  }
+}
