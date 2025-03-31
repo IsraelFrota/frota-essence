@@ -82,7 +82,7 @@ const Mural: React.FC = () => {
   };
 
 	return (
-		<div className="bg-white max-h-max w-[630px] rounded-lg p-4">
+		<div className="bg-white max-h-max w-[630px] rounded-lg p-4 text-xs">
 
 			<div className="text-5xl font-semibold mb-4">
 				Bem vindo(a)
@@ -121,7 +121,7 @@ const Mural: React.FC = () => {
 						</span>
 					</div>
 					
-					<div className="flex justify-between w-48 mt-4">
+					<div className="flex justify-between w-30 mt-4 text-xs">
 						<button 
               className="hover:text-[#fba91f] px-4"
               onClick={handlePublishPost}

@@ -64,14 +64,14 @@ const Reaction: React.FC<ReactionProps> = ({ postId, numberReaction }) => {
   }, [isReactionOcorred]);
 
   return (
-    <div className="flex justify-center items-center max-h-max">
+    <div className="flex justify-center items-center max-h-max text-xs">
       <div className="relative inline-block group">
-        <span className="flex justify-center bg-gray-300 w-[20px] rounded-[30%]">{numberReactions}</span>
+        <span className="flex justify-center bg-gray-300 w-[20px] rounded-[30%] text-xs">{numberReactions}</span>
 
         <div
           className="absolute left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2"
         >
-          <div className="flex flex-col w-[100px] truncate">
+          <div className="flex flex-col w-[100px] truncate text-xs">
             {reactions && reactions.map((reaction, index) => (
               <div key={index} className="flex gap-2">
                 <p>{emoji(reaction.type)}</p>
@@ -82,15 +82,15 @@ const Reaction: React.FC<ReactionProps> = ({ postId, numberReaction }) => {
         </div>
       </div>
       
-      <div className="relative inline-block group">
+      <div className="relative inline-block group text-xs">
         {/* Botão que, ao passar o mouse, exibe as reações */}
-        <button className="px-4 py-2 font-semibold rounded-md cursor-pointer hover:bg-gray-300">
+        <button className="px-4 py-2 font-semibold rounded-md cursor-pointer hover:bg-gray-300 text-xs">
           Reações
         </button>
 
         {/* Menu de reações */}
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-200 p-2 rounded-md shadow-lg space-x-2"
+          className="absolute left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-200 p-2 rounded-md text-xs shadow-lg space-x-2"
         >
           <div className="flex">
             <button

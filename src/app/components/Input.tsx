@@ -13,7 +13,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
 	return (
 		<input
-			className="md:w-1/2 w-4/5 h-10 p-2 border-b-2 focus:outline-none focus:border-b-[#fba91f] font-semibold text-lg"
+			className="md:w-1/2 w-4/5 h-10 p-2 border-b-2 focus:outline-none focus:border-b-[#fba91f] font-semibold md:text-md text-xs"
 			type={typeInput}
 			placeholder={placeholderInput}
 			value={valueInput}

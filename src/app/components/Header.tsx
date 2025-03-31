@@ -8,7 +8,7 @@ interface UserInfor {
 
 const Header: React.FC<UserInfor> = ({ fullName, profilePhoto }) => {
 	return (
-		<div className="flex justify-between items-center w-[80%] bg-white pl-4 pr-4 mb-4 rounded-lg">
+		<div className="flex justify-between items-center w-[80%] bg-white pl-4 pr-4 mb-4 rounded-lg text-xs">
 			<div className="flex">
 				<Image 
 					src="/logo.svg"

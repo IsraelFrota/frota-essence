@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
 			<>
 				<Header fullName={userData.fullName} profilePhoto={userData.profilePhoto} />
 
-				<div className="w-[80%] flex justify-between">
+				<div className="w-[80%] flex justify-between text-xs">
 					<div>
 						<UserArea 
 							nickname={userData.nickname} 

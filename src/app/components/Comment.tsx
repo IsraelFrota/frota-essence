@@ -96,7 +96,7 @@ const Comment: React.FC<CommentProps> = ({ postId, numberComment }) => {
   }, [isNewComment]);
 
   return (
-    <div className="flex justify-center items-center relative">
+    <div className="flex justify-center items-center relative text-xs">
       <div className="relative inline-block z-10"> 
         {/* Botão que ao clicar exibe o box de comentários */}
         <button
@@ -112,7 +112,7 @@ const Comment: React.FC<CommentProps> = ({ postId, numberComment }) => {
 
       {/* Box de comentários */}
       <div
-        className={`absolute top-0 left-0 right-0 bottom-0 bg-gray-200 p-4 rounded-md shadow-lg ${
+        className={`absolute top-0 left-0 right-0 bottom-0 bg-gray-200 p-4 rounded-md text-xs shadow-lg ${
           showCommentBox
             ? "opacity-100 visible scale-100 z-20"
             : "opacity-0 invisible scale-95"
@@ -129,7 +129,7 @@ const Comment: React.FC<CommentProps> = ({ postId, numberComment }) => {
         </div>
 
         {/* Exibição dos comentários existentes */}
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2 mb-4 text-xs">
           {comments.map((comment, index) => (
             <div key={index} className="bg-white p-2 rounded-md shadow-sm">
               <div className="flex items-center gap-2 mb-2">
@@ -143,14 +143,14 @@ const Comment: React.FC<CommentProps> = ({ postId, numberComment }) => {
 
         {/* Caixa para adicionar novo comentário */}
         <textarea
-          className="w-full h-[100px] p-2 border rounded-md mb-4"
+          className="w-full h-[100px] p-2 border rounded-md mb-4 text-xs"
           placeholder="Escreva seu comentário..."
           value={commentText}
           onChange={handleCommentChange}
         />
         <button
           onClick={handleAddComment}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md text-xs"
         >
           Comentar
         </button>

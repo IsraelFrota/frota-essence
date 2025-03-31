@@ -55,10 +55,10 @@ const Post: React.FC<PostProps> = ({ data }) => {
 	}, []);
 
 	return (
-		<div className="flex justify-center mt-6">
+		<div className="flex justify-center mt-6 text-xs">
 			<div className="flex flex-col justify-center items-center gap-2 p-2 w-[500px] max-h-max border rounded-lg">
 				
-				<div className="flex items-center w-[450px] gap-2">	
+				<div className="flex items-center w-[450px] gap-2 text-xs">	
 					<div className="w-12 h-12 rounded-full">
 						<Image
 							className="rounded-full"
@@ -68,9 +68,9 @@ const Post: React.FC<PostProps> = ({ data }) => {
 							height={48}
 						/>
 					</div>
-					<div>
+					<div className="text-xs">
 						<p className="font-semibold">{data.user.nickname}</p>
-						<span className="font-semibold text-gray-500 text-sm">{hourPublication} {datePublication}</span>
+						<span className="font-semibold text-gray-500">{hourPublication} {datePublication}</span>
 					</div>
 				</div>
 				
@@ -90,7 +90,7 @@ const Post: React.FC<PostProps> = ({ data }) => {
 					<></>
 				} 
 
-				<div className="flex justify-between items-center w-[450px] h-[30px]">
+				<div className="flex justify-between items-center w-[450px] h-[30px] text-xs">
 					<div className="flex justify-center w-[150px]">
 						<Reaction postId={data.id} numberReaction={data.reactions.length} />
 					</div>
