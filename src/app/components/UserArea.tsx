@@ -10,9 +10,11 @@ interface UserProps {
 }
 
 const UserArea: React.FC<UserProps> = ({ nickname, status, profilePhoto, isEdited=true }) => {
-	const [isVisible, setIsVisible] = useState(false);
+	const [isVisible, setIsVisible] = useState<boolean>(false);
+	const [isEditable, setIsEditable] = useState<boolean>(false);
 	const [image, setImage] = useState<File | null>(null);
 	const [startUpload, setStartUpload] = useState<boolean>(false);
+	const [newStatus, setNewStatus] = useState<string>(status);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -26,7 +28,6 @@ const UserArea: React.FC<UserProps> = ({ nickname, status, profilePhoto, isEdite
 	};
 
 	const handleUpdateProfilePhoto = async () => {
-		
 		if (!image) {
 			return;
 		}
@@ -46,7 +47,7 @@ const UserArea: React.FC<UserProps> = ({ nickname, status, profilePhoto, isEdite
 			if (response.ok) {
 				setImage(null);
 				setIsVisible(false);
-				
+				location.reload();
 			}
 			else {
 				throw new Error("Erro ao atualizar a foto de perfil");
@@ -61,8 +62,29 @@ const UserArea: React.FC<UserProps> = ({ nickname, status, profilePhoto, isEdite
 		handleUpdateProfilePhoto();
 	}, [startUpload]);
 
+	const handlePressEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === "Enter") {	
+			setIsEditable(false);
+
+			const response = await fetch("/api/status", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${localStorage.getItem("authToken")}`,					
+				},
+				body: JSON.stringify({ newStatus }),
+			});
+
+			if (response.ok) {
+				setNewStatus("");
+				setIsEditable(false);
+				location.reload();
+			}
+		}
+	};
+
 	return (
-		<div className="flex flex-col items-center bg-white w-[200px] max-h-max rounded-lg">
+		<div className="flex flex-col items-center bg-white w-[200px] max-h-max rounded-lg text-xs">
 			<div className="flex flex-col items-center border-b-2 border-b-slate-200 w-[90%]">
 				<div className="flex flex-col justify-center items-center w-full">
 					{isEdited &&
@@ -102,7 +124,19 @@ const UserArea: React.FC<UserProps> = ({ nickname, status, profilePhoto, isEdite
 				</div>
 				<div className="flex flex-col justify-center items-center gap-4">
 					<div className="font-semibold">{nickname}</div>
-					<div className="font-semibold opacity-30 text-center">{status}</div>
+					<div className="font-semibold opacity-30 text-center">
+						{isEditable || !status ?
+							<input
+								type="text"
+								value={newStatus}
+								placeholder="Use sua criatividade"
+								onChange={(e) => setNewStatus(e.target.value)}
+								onKeyDown={handlePressEnter}
+								className="bg-transparent w-full h-[30px] mb-2 px-2"
+							/> : 
+							<div onDoubleClick={() => setIsEditable(!isEditable)}>{status}</div>
+						}
+					</div>
 				</div>
 			</div>
 			<div className="p-4 border-b-2 border-slate-200 w-[90%] mb-4">
